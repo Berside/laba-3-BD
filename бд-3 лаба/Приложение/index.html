@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <i class="arrow"> <img src="arrow.png"></i>
+        <h5><a href="/index">Задание из 1 Лабораторной работы</a></h5>
+    </header>
+    <div class="z">
+        <div class="z1">
+            <h1> 3.2. Определить минимальную дату рождения автора в справочнике авторов, результат поместить в переменную, вывести значение переменной на экран. </h1>
+            <button class="submit-btn" id="bt1">Выполнить</button>
+        </div>
+        <div class="z2">
+            <h2> 3.6. Определить минимальную стоимость закупки книг в таблице покупок. Если полученная стоимость в диапазоне от 200 до 300, то ничего не сообщать, в противном случае вывести сообщение вида "Минимальная стоимость закупки = …" (вместо многоточия поставить точную стоимость).</h2>          
+            <button class="submit-btn" id="bt2">Выполнить</button>
+        </div>
+        <div class="z3">
+            <h3>3.9. По правилам оформления машинописных текстов перед знаками.,!?:; пробелы не ставятся, но обязательно ставятся после этих знаков. Расставьте недостающие пробелы. Подсчитать количество исправлений. </h3>
+            <textarea id="textInput" ></textarea>
+            <button class="submit-btn" id="bt3">Выполнить</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('bt1').addEventListener('click', function() {
+            fetch('/authors')
+                .then(response => response.json())
+                .then(data => {
+                    const authors = data[0] || data;
+                    const minBirthday = authors.reduce((min, author) => {
+                        const authorBirthday = new Date(author.Birthday);
+                        return authorBirthday < min ? authorBirthday : min;
+                    }, new Date());
+                    alert(`Минимальная дата рождения автора в справочнике авторов: ${minBirthday}`);
+                })
+                .catch(error => console.error('Ошибка при получении данных:', error));
+        });
+    
+        document.getElementById('bt2').addEventListener('click', function() {
+            fetch('/purchase')
+                .then(response => response.json())
+                .then(data => {
+                    const purchases = data[0] || data;
+                    const minCost = purchases.reduce((min, purchase) => {
+                        return Math.min(min, purchase.cost);
+                    }, Infinity);
+    
+                    if (minCost < 200 || minCost > 300) {
+                        alert(`Минимальная стоимость закупки = ${minCost}`);
+                    }
+                })
+                .catch(error => console.error('Ошибка при получении данных:', error));
+        });
+    
+        document.getElementById('bt3').addEventListener('click', function() {
+            const textarea = document.getElementById('textInput');
+            let text = textarea.value;
+            let correctionsCount = 0;
+            const regex = /([.,!?:;])(?!\s)/g;
+            text = text.replace(regex, (match) => {
+                correctionsCount++;
+                return match + ' ';
+            });
+            alert(`Исправленный текст:\n${text}\n\nКоличество исправлений: ${correctionsCount}`);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+/* Общие стили */
+@import url('https://fonts.googleapis.com/css?family=Poppins:wght@400;500&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    display: flex; /* Добавлено для центрирования */
+    justify-content: center; /* Добавлено для центрирования */
+    align-items: center; /* Добавлено для центрирования */
+    min-height: 100vh; /* Убедитесь, что высота body занимает весь экран */
+    background: #dfdfdf;
+}
+header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 1px 100px; /* Уменьшение высоты заголовка */
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px; /* Увеличение размера шрифта */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #222;
+    font-weight: 400;
+}
+
+img {
+    width: 25px; /* Установка ширины иконки */
+    height: 25px; /* Установка высоты иконки */
+    margin-right: 1px; /* Отступ справа от иконки */
+}
+a{
+    color: #dfdfdf;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+
+}
+header h5 {
+    padding: 20px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+header h5:hover {
+    text-decoration: underline;
+}
+
+
+.z {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 1000px;
+    height: 500px;
+    padding: 50px;
+    margin-top: 70px;
+}
+
+/* Стилизация блоков с заголовками и кнопками */
+.z1, .z2, .z3 {
+    width: 85%;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.input:focus{
+    width: 105%;
+}
+::placeholder{
+    font-weight: 500;
+    color: #222;
+}
+/* Стилизация кнопок */
+.submit-btn {
+    background-color: black;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 150px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #000;
+    transform: scale(1.05,1);
+}
+
+/* Стилизация текстовой области */
+textarea {
+    width: 97%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+#authorsTable, #employeeTable, #childTable, #giftTable {
+    margin: 20px auto;
+    width: 80%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
