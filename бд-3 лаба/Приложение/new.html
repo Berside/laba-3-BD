@@ -11,93 +11,79 @@
         <i class="arrow"><img src="arrow.png"></i>
         <h5><a href="/main">Задание из 2 Лабораторной работы</a></h5>
     </header>
-    <div id="authorsTable"></div>
     <div id="employeeTable"></div>
-    <div id="childTable"></div>
-    <div id="giftTable"></div>
-    <button id="refreshButton">Обновить таблицы</button>
     <form id="employeeForm">
-        <input type="text" id="lastname" placeholder="Фамилия" required>
-        <input type="text" id="name" placeholder="Имя" required>
-        <input type="text" id="middlename" placeholder="Отчество" required>
-        <input type="text" id="post" placeholder="Должность" required>
-        <input type="text" id="division" placeholder="Отдел" required>
-        <input type="date" id="date_of_admission" placeholder="Дата приема" required>
-        <button type="submit">Добавить сотрудника</button>
+        <input type="text" id="id" placeholder="Employee" required value="">
+        <input type="text" id="lastname" placeholder="lastname_Employee" required>
+        <input type="text" id="name" placeholder="name_Employee" required>
+        <input type="text" id="middlename" placeholder="middlename_Employee" required>
+        <input type="text" id="post" placeholder="post_Employee" required>
+        <input type="text" id="division" placeholder="division_Employee" required>
+        <input type="text" id="date_of_admission" placeholder="date_of_admission" required>
+        <button type="submit">Add Employee</button>
+        <button id="refreshButton">Update the table</button>
+        <input type="number" class="deletei"id="delete" placeholder="Employee you want to delete">
+        <button id="deleteButton" class="deletebutton">Delete</button>
     </form>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/employee')
-                .then(response => response.json())
-                .then(data => {
-                    updateTable(data);
-                })
-                .catch(error => console.error('Ошибка при получении данных:', error));
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/employee')
+       .then(response => response.json())
+       .then(data => {
+            console.log(data);
+            updateTable(data, 'employeeTable');
+        })
+       .catch(error => console.error('Ошибка при получении данных:', error));
+});
+
+document.getElementById('refreshButton').addEventListener('click', function() {
+    fetch('/employee')
+       .then(response => response.json())
+       .then(data => {
+            updateTable(data, 'employeeTable'); // Указываем tableId здесь
+        })
+       .catch(error => console.error('Ошибка при получении данных:', error));
+       document.getElementById('employeeForm').reset();
+});
+        function updateTable(data, tableId) {
+    const authors = data[0] || data;
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    const headerRow = document.createElement('tr');
+    Object.keys(authors[0]).forEach(key => {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+    authors.forEach(author => {
+        const row = document.createElement('tr');
+        Object.values(author).forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value;
+            row.appendChild(td);
         });
+        tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/сhild')
-                .then(response => response.json())
-                .then(data => {
-                    updateTable(data);
-                })
-                .catch(error => console.error('Ошибка при получении данных:', error));
-        });
+    const targetDiv = document.getElementById(tableId);
+    while (targetDiv.firstChild) {
+        targetDiv.removeChild(targetDiv.firstChild);
+    }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/gift')
-                .then(response => response.json())
-                .then(data => {
-                    updateTable(data);
-                })
-                .catch(error => console.error('Ошибка при получении данных:', error));
-        });
+    targetDiv.appendChild(table);
+}
 
-        document.getElementById('refreshButton').addEventListener('click', function() {
-            fetch('/employee')
-                .then(response => response.json())
-                .then(data => {
-                    updateTable(data);
-                })
-                .catch(error => console.error('Ошибка при получении данных:', error));
-        });
-
-        function updateTable(data) {
-            const authors = data[0] || data;
-            const table = document.createElement('table');
-            const thead = document.createElement('thead');
-            const tbody = document.createElement('tbody');
-            const headerRow = document.createElement('tr');
-            Object.keys(authors[0]).forEach(key => {
-                const th = document.createElement('th');
-                th.textContent = key;
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-            authors.forEach(author => {
-                const row = document.createElement('tr');
-                Object.values(author).forEach(value => {
-                    const td = document.createElement('td');
-                    td.textContent = value;
-                    row.appendChild(td);
-                });
-                tbody.appendChild(row);
-            });
-            table.appendChild(tbody);
-
-            const authorsTable = document.getElementById('authorsTable');
-            while (authorsTable.firstChild) {
-                authorsTable.removeChild(authorsTable.firstChild);
-            }
-
-            authorsTable.appendChild(table);
-        }
 
         document.getElementById('employeeForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
             const employeeData = {
+                Employee: document.getElementById('id').value,
                 lastname_Employee: document.getElementById('lastname').value,
                 name_Employee: document.getElementById('name').value,
                 middlename_Employee: document.getElementById('middlename').value,
@@ -120,7 +106,34 @@
             .catch((error) => {
                 console.error('Error:', error);
             });
+
         });
+        document.getElementById('deleteButton').addEventListener('click', function() {
+    const idToDelete = document.getElementById('delete').value;
+    if (idToDelete) {
+        deleteEmployee(idToDelete);
+    } else {
+        alert('Введите ID сотрудника, которого хотите удалить.');
+    }
+    document.getElementById('employeeForm').reset();
+});
+
+function deleteEmployee(id) {
+    fetch(`/employee/${id}`, {
+        method: 'DELETE',
+    })
+  .then(response => response.text())
+  .then(message => {
+        console.log(message);
+        fetch('/employee')
+         .then(response => response.json())
+         .then(data => {
+                updateTable(data, 'employeeTable');
+            })
+         .catch(error => console.error('Ошибка при обновлении данных:', error));
+    })
+  .catch(error => console.error('Ошибка при удалении сотрудника:', error));
+}
     </script>
 </body>
 </html>
