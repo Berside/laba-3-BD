@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class ="Reg">
+        <div class="Reg-header">
+            <header>Sign Up</header>
+        </div>
+        <div class="input-box">
+            <input type="text" class="input" id="Email"placeholder="Email" autocomplete="off" required>
+        </div>
+        <div class="input-box">
+            <input type="password" class="input" id="Password" placeholder="Password" autocomplete="off" required>
+        </div>
+        <div class="input-box">
+            <input type="password" class="input" id="PasswordX2" placeholder="Repeat Password" autocomplete="off" required>
+        </div>
+        <div class="input-box">
+            <input type="text" class="input" id="Unicode" placeholder="Code" autocomplete="off" required>
+        </div>
+        <div class="input-submit">
+            <button class="submit-btn" id="submit"></button>
+            <label for="submit">Sign In</label>
+        </div>
+        <div class="sign-up-link">
+            <p>We have account <a href="main.html">Login</a></p> 
+        </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; 
+    const currentDay = now.getDate();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const result = currentYear - currentMonth - currentDay - currentHour - currentMinute;
+    console.log(result);
+});
+
+document.getElementById('submit').addEventListener('click', function(event) {
+    event.preventDefault();
+    const email = document.getElementById('Email').value;
+    const password = document.getElementById('Password').value;
+    const repeat = document.getElementById('PasswordX2').value;
+    const Unicode = document.getElementById('Unicode').value;
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    const currentDay = now.getDate();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const result = currentYear - currentMonth - currentDay - currentHour - currentMinute;
+    console.log(result);
+    if (!email.includes('@')) {
+        alert('Please enter a valid email address.');
+        return; 
+    }
+    if (password.length < 7) {
+        alert('Password must be at least 7 characters long.');
+        return; 
+    }
+    if (repeat != password) {
+        alert('Error');
+        return;
+    }
+    if (Unicode != result) {
+        alert('Error');
+        return;
+    }
+    fetch('/users')
+       .then(response => response.json())
+       .then(data => {
+            const user = data.find(userArray => {
+                for (let i = 0; i < userArray.length; i++) {
+                    if (userArray[i].Email === email) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+            if (user) {
+                alert('This login and password combination is already taken.');
+                return; 
+            }
+            const employeeData = {
+                Email: email,
+                Password: password,
+            };
+            fetch('/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(employeeData),
+            })
+           .then(response => response.json())
+           .then(data => {
+                console.log('Success:', data);
+                window.location.href = '/log';
+            })
+           .catch((error) => {
+                console.error('Error:', error);
+            });
+            fetch('/employee')
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/log';
+    })
+  .catch(error => console.error('Ошибка при получении данных:', error));
+        })
+       .catch(error => console.error('Ошибка при получении данных:', error));
+});
+    </script>
+</body>
+</html>

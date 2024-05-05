@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main</title>
+    <title>Задание из 2 Лабораторной работы</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -14,39 +14,28 @@
     <div id="employeeTable"></div>
     <form id="employeeForm">
         <input type="text" id="id" placeholder="Employee" required value="">
-        <input type="text" id="lastname" placeholder="lastname_Employee" required>
-        <input type="text" id="name" placeholder="name_Employee" required>
-        <input type="text" id="middlename" placeholder="middlename_Employee" required>
-        <input type="text" id="post" placeholder="post_Employee" required>
-        <input type="text" id="division" placeholder="division_Employee" required>
-        <input type="text" id="date_of_admission" placeholder="date_of_admission" required>
-        <button type="submit">Add Employee</button>
-        <button id="refreshButton">Update the table</button>
-        <input type="number" class="deletei"id="delete" placeholder="Employee you want to delete">
+        <input type="text" id="lastname" placeholder="Lastname" required>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="middlename" placeholder="Middlename" required>
+        <input type="text" id="post" placeholder="Post" required>
+        <input type="text" id="division" placeholder="Division" required>
+        <input type="text" id="date_of_admission" placeholder="Date of admission" required>
+        <button type="submit" class="add">Add Employee</button>
+        <input type="number" class="deletei" id="delete" placeholder="Employee you want to delete">
         <button id="deleteButton" class="deletebutton">Delete</button>
     </form>
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/employee')
-       .then(response => response.json())
-       .then(data => {
+     .then(response => response.json())
+     .then(data => {
             console.log(data);
             updateTable(data, 'employeeTable');
         })
-       .catch(error => console.error('Ошибка при получении данных:', error));
+     .catch(error => console.error('Ошибка при получении данных:', error));
 });
-
-document.getElementById('refreshButton').addEventListener('click', function() {
-    fetch('/employee')
-       .then(response => response.json())
-       .then(data => {
-            updateTable(data, 'employeeTable'); // Указываем tableId здесь
-        })
-       .catch(error => console.error('Ошибка при получении данных:', error));
-       document.getElementById('employeeForm').reset();
-});
-        function updateTable(data, tableId) {
+function updateTable(data, tableId) {
     const authors = data[0] || data;
     const table = document.createElement('table');
     const thead = document.createElement('thead');
@@ -78,37 +67,41 @@ document.getElementById('refreshButton').addEventListener('click', function() {
     targetDiv.appendChild(table);
 }
 
+document.getElementById('employeeForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const employeeData = {
+        Employee: document.getElementById('id').value,
+        lastname_Employee: document.getElementById('lastname').value,
+        name_Employee: document.getElementById('name').value,
+        middlename_Employee: document.getElementById('middlename').value,
+        post_Employee: document.getElementById('post').value,
+        division_Employee: document.getElementById('division').value,
+        date_of_admission: document.getElementById('date_of_admission').value
+    };
 
-        document.getElementById('employeeForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+    fetch('/employee', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employeeData),
+    })
+  .then(response => response.json())
+  .then(data => {
+        console.log('Success:', data);
+    })
+  .catch((error) => {
+        console.error('Error:', error);
+    });
+    fetch('/employee')
+  .then(response => response.json())
+  .then(data => {
+        updateTable(data, 'employeeTable');
+    })
+  .catch(error => console.error('Ошибка при получении данных:', error));
+});
 
-            const employeeData = {
-                Employee: document.getElementById('id').value,
-                lastname_Employee: document.getElementById('lastname').value,
-                name_Employee: document.getElementById('name').value,
-                middlename_Employee: document.getElementById('middlename').value,
-                post_Employee: document.getElementById('post').value,
-                division_Employee: document.getElementById('division').value,
-                date_of_admission: document.getElementById('date_of_admission').value
-            };
-
-            fetch('/employee', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(employeeData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-
-        });
-        document.getElementById('deleteButton').addEventListener('click', function() {
+document.getElementById('deleteButton').addEventListener('click', function() {
     const idToDelete = document.getElementById('delete').value;
     if (idToDelete) {
         deleteEmployee(idToDelete);
@@ -122,17 +115,17 @@ function deleteEmployee(id) {
     fetch(`/employee/${id}`, {
         method: 'DELETE',
     })
-  .then(response => response.text())
-  .then(message => {
+.then(response => response.text())
+.then(message => {
         console.log(message);
         fetch('/employee')
-         .then(response => response.json())
-         .then(data => {
+       .then(response => response.json())
+       .then(data => {
                 updateTable(data, 'employeeTable');
             })
-         .catch(error => console.error('Ошибка при обновлении данных:', error));
+       .catch(error => console.error('Ошибка при обновлении данных:', error));
     })
-  .catch(error => console.error('Ошибка при удалении сотрудника:', error));
+.catch(error => console.error('Ошибка при удалении сотрудника:', error));
 }
     </script>
 </body>

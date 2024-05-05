@@ -45,16 +45,32 @@ app.get('/index', function(req, res) {
     res.sendFile(path.join(__dirname, 'new.html'));
 });
 
+app.get('/reg', function(req, res) {
+    res.sendFile(path.join(__dirname, 'reg.html'));
+});
+
 app.get('/employee', function(req, res) {
     pool.query('SELECT * FROM employee').then(function(data) {
         res.json(data);
     });
 });
 
+app.post('/users', async (req, res) => {
+    const {Email, Password} = req.body;
+    try{
+        const [result] = await pool.query(
+            `INSERT INTO user (Email, Password) VALUES (?,?)`,
+            [Email, Password]
+        );
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('An error occurred while adding the user.');
+    }
+});
+
 
 app.post('/employee', async (req, res) => {
     const {Employee, lastname_Employee, name_Employee, middlename_Employee, post_Employee, division_Employee, date_of_admission } = req.body;
-
     try {
         const [result] = await pool.query(
             `INSERT INTO employee (Employee, lastname_Employee, name_Employee, middlename_Employee, post_Employee, division_Employee, date_of_admission) VALUES (?,?,?,?,?,?,?)`,

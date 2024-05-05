@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class ="login">
+        <div class="login-header">
+            <header>Login</header>
+        </div>
+        <div class="input-box">
+            <input type="text" class="input"  id="Email" placeholder="Email" autocomplete="off" required>
+        </div>
+        <div class="input-box">
+            <input type="text" class="input" id="Password" placeholder="Password" autocomplete="off" required>
+        </div>
+        <div class="input-submit">
+            <button class="submit-btn" id="submit"></button>
+            <label for="submit">Sign In</label>
+        </div>
+        <div class="sign-up-link">
+            <p>Don't have account <a href="/reg">Sign Up</a></p> 
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('submit').addEventListener('click', function(event) {
+                event.preventDefault(); 
+                const email = document.getElementById('Email').value;
+                const password = document.getElementById('Password').value;
+                fetch('/users')
+                  .then(response => response.json())
+                  .then(data => {
+                        console.log(data);
+                        const user = data.find(userArray => {
+                            for (let i = 0; i < userArray.length; i++) {
+                                if (userArray[i].Email === email && userArray[i].Password === password) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        });
+                        if (user) {
+                            window.location.href = '/index'; 
+                            console.log("Success");
+                        } else {
+                            alert('Неверные учетные данные');
+                        }
+                    })
+                  .catch(error => console.error('Ошибка при получении данных:', error));
+            });
+        });
+    </script>
+    
+</body>
+</html>
