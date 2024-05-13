@@ -51,20 +51,26 @@ function updateTable(data, tableId) {
     authors.forEach(author => {
         const row = document.createElement('tr');
         Object.values(author).forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = value;
-            row.appendChild(td);
+            if (typeof value === 'string' && value.includes('T')) {
+                const formattedDate = new Date(value).toLocaleDateString('ru-RU', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                const td = document.createElement('td');
+                td.textContent = formattedDate;
+                row.appendChild(td);
+            } else {
+                const td = document.createElement('td');
+                td.textContent = value;
+                row.appendChild(td);
+            }
         });
         tbody.appendChild(row);
     });
     table.appendChild(tbody);
-
     const targetDiv = document.getElementById(tableId);
     while (targetDiv.firstChild) {
         targetDiv.removeChild(targetDiv.firstChild);
     }
-
     targetDiv.appendChild(table);
+    document.getElementById('employeeForm').reset();
 }
 
 document.getElementById('employeeForm').addEventListener('submit', function(event) {
