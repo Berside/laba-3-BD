@@ -1,0 +1,199 @@
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:wght@400;500&display=swap');
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    background: #dfdfdf;
+}
+header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 1px 100px; 
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #222;
+    font-weight: 400;
+}
+img {
+    width: 25px; 
+    height: 25px; 
+    margin-right: 1px; 
+}
+a{
+    color: #dfdfdf;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+
+}
+header h5 {
+    padding: 20px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+header h5:hover {
+    text-decoration: underline;
+}
+.input:focus{
+    width: 105%;
+}
+::placeholder{
+    font-weight: 500;
+    color: #222;
+}
+.d{
+    text-decoration: none;
+    color: #222;
+}
+.submit-btn{
+    color: white;
+    width: 100%;
+    height: 60px;
+    background: #222;
+    border:none;
+    border-radius: 30px;
+    cursor:pointer;
+    transition: .3s;
+}
+.submit-btn:hover{
+    background: #000;
+    transform: scale(1.05,1);
+}
+#authorsTable, #employeeTable, #childTable, #giftTable {
+    margin: 20px auto;
+    width: 80%;
+}
+
+table {
+    margin-left: 500px;
+    width: 100%;
+    border-collapse: collapse;
+}
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+table th {
+    background-color: #f2f2f2;
+}
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.child{
+    margin-left: 200px; 
+    margin-top: 20px;
+}
+
+.child input[type="text"],
+.child input[type="date"] {
+    width: 325px; 
+    margin-left: 500px; 
+    padding: 10px;
+    margin-bottom: 10px; 
+    box-sizing: border-box;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.05);
+    outline: none;
+    transition:.3s;
+}
+#employeeForm input::placeholder {
+    font-weight: 500;
+    color: #222;
+}
+
+#employeeForm input:focus {
+    width: 350px; 
+}
+
+
+.add{
+    background-color: black;
+    color: #fff;
+    border: none;
+    margin-left: 500px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 325px;
+    transition: background-color 0.3s ease;
+    background: #222;
+    border:none;
+    border-radius: 30px;
+    cursor:pointer;
+    transition: .3s;
+}
+.add:hover{
+    background: #000;
+    transform: scale(1.05,1);
+}
+.deletei{
+    margin-top: 20px;
+    width: 325px;
+    margin-left: 500px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.05);
+    outline: none;
+    transition: .3s;
+}
+.deletebutton{
+    background-color: black;
+    color: #fff;
+    border: none;
+    margin-left: 500px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 325px;
+    transition: background-color 0.3s ease;
+    background: #222;
+    border:none;
+    border-radius: 30px;
+    cursor:pointer;
+    transition: .3s;
+}
+.deletebutton:hover {
+    background: #000;
+    transform: scale(1.05,1);
+}
+.giftform{
+    margin-left: 200px; 
+    margin-top: 20px;
+}
+.giftform input[type="text"],
+.giftform input[type="date"] {
+    width: 325px; 
+    margin-left: 500px; 
+    padding: 10px;
+    margin-bottom: 10px; 
+    box-sizing: border-box;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.05);
+    outline: none;
+    transition:.3s;
+}

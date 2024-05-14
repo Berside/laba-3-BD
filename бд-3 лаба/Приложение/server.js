@@ -45,12 +45,30 @@ app.get('/index', function(req, res) {
     res.sendFile(path.join(__dirname, 'new.html'));
 });
 
+app.get('/c', function(req, res) {
+    res.sendFile(path.join(__dirname, 'child.html'));
+});
+
+app.get('/g', function(req, res) {
+    res.sendFile(path.join(__dirname, 'gift.html'));
+});
+
 app.get('/reg', function(req, res) {
     res.sendFile(path.join(__dirname, 'reg.html'));
 });
 
 app.get('/employee', function(req, res) {
     pool.query('SELECT * FROM employee').then(function(data) {
+        res.json(data);
+    });
+});
+app.get('/child', function(req, res) {
+    pool.query('SELECT * FROM child').then(function(data) {
+        res.json(data);
+    });
+});
+app.get('/gift', function(req, res) {
+    pool.query('SELECT * FROM gift').then(function(data) {
         res.json(data);
     });
 });
@@ -100,6 +118,67 @@ app.delete('/employee/:id', async (req, res) => {
     }
 });
 
+
+app.post('/gift', async (req, res) => {
+    const {childcode, costGIFT, dateofGift, issuecode} = req.body;
+    try {
+        const [result] = await pool.query(
+            `INSERT INTO gift (childcode, costGIFT, dateofGift, issuecode) VALUES (?,?,?,?)`,
+            [childcode, costGIFT, dateofGift, issuecode]
+        );
+        console.log(result);
+        res.send('Gift added successfully.');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('An error occurred while adding the gift.');
+    }
+});
+
+app.delete('/gift/:issuecode', async (req, res) => {
+    const { issuecode } = req.params;
+    try {
+        const [result] = await pool.query(
+            `DELETE FROM gift WHERE issuecode =?`,
+            [issuecode]
+        );
+        console.log(result);
+        res.send('Gift deleted successfully.');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('An error occurred while deleting the gift.');
+    }
+});
+
+
+app.post('/child', async (req, res) => {
+    const {Employee, childname, dateofbirth, childcode} = req.body;
+    try {
+        const [result] = await pool.query(
+            `INSERT INTO child (Employee, childname, dateofbirth, childcode) VALUES (?,?,?,?)`,
+            [Employee, childname, dateofbirth, childcode]
+        );
+        console.log(result);
+        res.send('child added successfully.');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('An error occurred while adding the child.');
+    }
+});
+
+app.delete('/child/:childcode', async (req, res) => {
+    const { childcode } = req.params;
+    try {
+        const [result] = await pool.query(
+            `DELETE FROM child WHERE childcode =?`,
+            [childcode]
+        );
+        console.log(result);
+        res.send('child deleted successfully.');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('An error occurred while deleting the child.');
+    }
+});
 app.listen(3000, function() {
     console.log('server started!');
 });

@@ -3,34 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee</title>
-    <link rel="stylesheet" href="main.css">
+    <title>Child</title>
+    <link rel="stylesheet" href="childgift.css">
 </head>
 <body>
     <header>
         <h5><a href="/main">Tasks</a></h5>
-        <i class="arrow"><img src="arrow.png"></i>
         <h5><a href="/index">Employee</a></h5>
         <h5><a href="/g">Gift</a></h5>
+        <i class="arrow"><img src="arrow.png"></i>
         <h5><a href="/c">Child</a></h5>
     </header>
     <div id="employeeTable"></div>
-    <form id="employeeForm">
-        <input type="text" id="id" placeholder="ID" value="">
-        <input type="text" id="lastname" placeholder="Lastname" required>
-        <input type="text" id="name" placeholder="Name" required>
-        <input type="text" id="middlename" placeholder="Middlename" required>
-        <input type="text" id="post" placeholder="Post" required>
-        <input type="text" id="division" placeholder="Division" required>
-        <input type="text" id="date_of_admission" placeholder="Date of admission" required>
-        <button type="submit" class="add">Add Employee</button>
-        <input type="number" class="deletei" id="delete" placeholder="Employee you want to delete">
+    <form id="employeeForm" class="child">
+        <input type="text" id="Employee" placeholder="Id that is in the Employee table" required>
+        <input type="text" id="childname" placeholder="childname" required>
+        <input type="text" id="dateofbirth" placeholder="dateofbirth" required>
+        <input type="text" id="childcode" placeholder="childcode" value="">
+        <button type="submit" class="add">Add child</button>
+        <input type="number" class="deletei" id="delete" placeholder="Childcode you want to delete">
         <button id="deleteButton" class="deletebutton">Delete</button>
     </form>
-
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/employee')
+            document.addEventListener('DOMContentLoaded', function() {
+    fetch('/child')
      .then(response => response.json())
      .then(data => {
             console.log(data);
@@ -79,16 +75,13 @@ function updateTable(data, tableId) {
 document.getElementById('employeeForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const employeeData = {
-        Employee: document.getElementById('id').value,
-        lastname_Employee: document.getElementById('lastname').value,
-        name_Employee: document.getElementById('name').value,
-        middlename_Employee: document.getElementById('middlename').value,
-        post_Employee: document.getElementById('post').value,
-        division_Employee: document.getElementById('division').value,
-        date_of_admission: document.getElementById('date_of_admission').value
+        Employee: document.getElementById('Employee').value,
+        childname: document.getElementById('childname').value,
+        dateofbirth: document.getElementById('dateofbirth').value,
+        childcode: document.getElementById('childcode').value,
     };
 
-    fetch('/employee', {
+    fetch('/child', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -102,7 +95,7 @@ document.getElementById('employeeForm').addEventListener('submit', function(even
   .catch((error) => {
         console.error('Error:', error);
     });
-    fetch('/employee')
+    fetch('/child')
   .then(response => response.json())
   .then(data => {
         updateTable(data, 'employeeTable');
@@ -120,14 +113,14 @@ document.getElementById('deleteButton').addEventListener('click', function() {
     document.getElementById('employeeForm').reset();
 });
 
-function deleteEmployee(id) {
-    fetch(`/employee/${id}`, {
+function deleteEmployee(childcode) {
+    fetch(`/child/${childcode}`, {
         method: 'DELETE',
     })
 .then(response => response.text())
 .then(message => {
         console.log(message);
-        fetch('/employee')
+        fetch('/child')
        .then(response => response.json())
        .then(data => {
                 updateTable(data, 'employeeTable');
